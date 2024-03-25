@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from models import Session, Year
+from repositories.year import YearRepository
 
 bill_items = Blueprint("bill_items", __name__)
 
@@ -9,7 +9,7 @@ def create_bill_item():
     year_string = content['year']
 
     if not year_string:
-        return { "error": "param year does not exists" }, 400
+        return { "error": "invalid params" }, 400
 
     try:
         if exist_year(year_string):
@@ -20,10 +20,10 @@ def create_bill_item():
     except Exception as e:
         return { "error": str(e) }, 400
 
-def exist_year(year_string: str):
+def exist_year(year_string: str) -> bool:
     try:
-        session = Session()
-        existent_years = session.query(Year).all()
+        year_repository = YearRepository()
+        existent_years = year_repository.read()
 
         for year in existent_years:
             if year.year == year_string:
@@ -34,11 +34,9 @@ def exist_year(year_string: str):
         raise ValueError("Error on fetching years:" + str(e))
 
 
-def save_year(year_string: str):
+def save_year(year: str):
     try:
-        session = Session()
-        year = Year(year_string)
-        session.add(year)
-        session.commit()
+        year_repository = YearRepository()
+        year_repository.create(year)
     except Exception as e:
         raise ValueError("Error on saving year:" + str(e))
