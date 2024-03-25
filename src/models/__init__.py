@@ -2,8 +2,8 @@ from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
-from model.base import Base
-from model.year import Year
+from models.base import Base
+from models.year import Year
 
 db_url = 'sqlite:///database/db.sqlite3'
 

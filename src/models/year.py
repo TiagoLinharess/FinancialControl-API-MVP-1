@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
 from datetime import datetime
 from typing import Union
 
-from  model import Base
+from  models import Base
 
 class Year(Base):
     __tablename__ = 'year'
