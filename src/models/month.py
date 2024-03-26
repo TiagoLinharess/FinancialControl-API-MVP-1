@@ -11,9 +11,18 @@ class Month(Base):
     month = Column(String(20))
     date_insert = Column(DateTime, default=datetime.now())
 
+    # Definição do relacionamento entre o Months e um Year.
+    # Aqui está sendo definido a coluna 'year' que vai guardar
     year = Column(Integer, ForeignKey("year.pk_year"), nullable=False)
 
     def __init__(self, month: str, date_insert:Union[DateTime, None] = None):
+        """
+        Cria um Month
+        Arguments:
+            month: o mês a ser criado.
+            data_insercao: data de quando o comentário foi feito ou inserido
+                           à base
+        """
         self.month = month
         if date_insert:
             self.date_insert = date_insert

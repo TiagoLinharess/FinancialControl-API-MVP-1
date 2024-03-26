@@ -2,37 +2,65 @@ from flask import Blueprint, request
 from repositories.year import YearRepository
 from repositories.month import MonthRepository
 from models import Session, Year
+from schemas.default import DefaultRequestSchema
 
 bill_items = Blueprint("bill_items", __name__)
 
+# Rota de POST do endpoint de Bill Items
 @bill_items.post('/bill_items')
 def create_bill_item():
     try:
+        # Cria sessão
         session = Session()
-        content = request.json
-        year_string = content['year']
-        month_string = content['month'].lower()
 
-        if not year_string or not month_string:
-            return { "error": "invalid params" }, 400
+        # Cria Schema
+        schema = read_post_body(request.json)
+        
+        # Cria Ano se não existir
+        year = save_year(session, schema.get_year())
 
-        year = save_year(session, year_string)
-        save_month(session, month_string, year)
+        # Cria mês se não existir
+        save_month(session, schema.get_month(), year)
+
+        # Executa commit no banco de dados
         session.commit()
+
+        # Retorno de sucesso da rota
         return { "success": True }, 201
     except Exception as e:
+        # Retorno de erro da rota
         return { "error": str(e) }, 400
+
+def read_post_body(content) -> DefaultRequestSchema:
+    # Busca body da rota de POST
+    year_string = str(content["year"])
+    month_string = str(content["month"]).lower()
+    
+    # Verifica valor do body
+    if not year_string or not month_string:
+        raise ValueError("Invalid params.")
+
+    # Retornos do schema
+    return DefaultRequestSchema(year_string, month_string)
 
 def save_year(session: Session, year: str) -> Year:
     try:
+        # Instancia repositório
         year_repository = YearRepository(session)
+
+        # Cria ano se existir no repositório
         return year_repository.create(year)
     except Exception as e:
+        # Tratativa de erro do repostirório
         raise ValueError("Error on saving year: " + str(e))
 
 def save_month(session: Session, month_string: str, year: Year):
     try:
+        # Instancia repositório
         month_repository = MonthRepository(session)
+
+        # Cria mês se não existir no repositório
         month_repository.create(month_string, year)
     except Exception as e:
-        raise ValueError("Error on saving year: " + str(e))
+        # Tratativa de erro do repostirório
+        raise ValueError("Error on saving month: " + str(e))
