@@ -4,10 +4,10 @@ from repositories.month import MonthRepository
 from models import Session, Year
 from schemas.default import DefaultRequestSchema
 
-bill_items = Blueprint("bill_items", __name__)
+post_bill_items = Blueprint("post_bill_items", __name__)
 
 # Rota de POST do endpoint de Bill Items
-@bill_items.post('/bill_items')
+@post_bill_items.post('/bill_items')
 def create_bill_item():
     try:
         # Cria sessão
