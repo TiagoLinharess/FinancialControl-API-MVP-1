@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
 from models.base import Base
+from models.month import Month
 from models.year import Year
 
 db_url = 'sqlite:///database/db.sqlite3'
