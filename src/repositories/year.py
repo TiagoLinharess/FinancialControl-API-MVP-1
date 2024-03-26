@@ -2,16 +2,28 @@ from models import Session, Year
 
 class YearRepository():
 
-    def __init__(self):
-        self.__session = Session()
+    def __init__(self, session: Session):
+        self.__session = session
 
-    def create(self, year_string: str):
+    def create(self, year_string: str) -> Year:
+        existent_year = self.exist_year(year_string)
+
+        if existent_year:
+            return existent_year
+
         year = Year(year_string)
         self.__session.add(year)
-        self.__session.commit()
+        return year
 
-    def read(self):
-        print("test")
+    def read(self) -> [Year]:
         existent_years = self.__session.query(Year).all()
-        print(existent_years)
         return existent_years
+
+    def exist_year(self, year_string: str) -> Year:
+        existent_years = self.read()
+
+        for year in existent_years:
+            if year.year == year_string:
+                return year
+        
+        return

@@ -1,42 +1,38 @@
 from flask import Blueprint, request
 from repositories.year import YearRepository
+from repositories.month import MonthRepository
+from models import Session, Year
 
 bill_items = Blueprint("bill_items", __name__)
 
 @bill_items.post('/bill_items')
 def create_bill_item():
-    content = request.json
-    year_string = content['year']
-
-    if not year_string:
-        return { "error": "invalid params" }, 400
-
     try:
-        if exist_year(year_string):
-            return { "exist success": True }, 201
+        session = Session()
+        content = request.json
+        year_string = content['year']
+        month_string = content['month'].lower()
 
-        save_year(year_string)
+        if not year_string or not month_string:
+            return { "error": "invalid params" }, 400
+
+        year = save_year(session, year_string)
+        save_month(session, month_string, year)
+        session.commit()
         return { "success": True }, 201
     except Exception as e:
         return { "error": str(e) }, 400
 
-def exist_year(year_string: str) -> bool:
+def save_year(session: Session, year: str) -> Year:
     try:
-        year_repository = YearRepository()
-        existent_years = year_repository.read()
-
-        for year in existent_years:
-            if year.year == year_string:
-                return True
-        
-        return False
+        year_repository = YearRepository(session)
+        return year_repository.create(year)
     except Exception as e:
-        raise ValueError("Error on fetching years:" + str(e))
+        raise ValueError("Error on saving year: " + str(e))
 
-
-def save_year(year: str):
+def save_month(session: Session, month_string: str, year: Year):
     try:
-        year_repository = YearRepository()
-        year_repository.create(year)
+        month_repository = MonthRepository(session)
+        month_repository.create(month_string, year)
     except Exception as e:
-        raise ValueError("Error on saving year:" + str(e))
+        raise ValueError("Error on saving year: " + str(e))

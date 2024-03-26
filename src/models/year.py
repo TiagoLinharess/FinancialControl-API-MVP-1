@@ -8,7 +8,7 @@ from models import Base, Month
 class Year(Base):
     __tablename__ = 'year'
 
-    id = Column("pk_year" ,Integer, primary_key=True)
+    id = Column("pk_year" , Integer, primary_key=True)
     year = Column(String(4))
     date_insert = Column(DateTime, default=datetime.now())
 
