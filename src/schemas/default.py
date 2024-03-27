@@ -38,12 +38,14 @@ class DefaultResponseSchema:
     # Inicializa response
     def __init__(self, year: Year):
         self.year: str = year.year
+        self.id: int = year.id
         self.months: List[MonthSchema] = list(map(get_month, year.months))
     
     # Transforma objeto em json
     def to_json(self):
         return {
             "year": self.year,
+            "id": self.id,
             "months": list(map(get_month_json, self.months))
         }
 

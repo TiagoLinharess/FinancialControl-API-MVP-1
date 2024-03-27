@@ -8,6 +8,7 @@ class MonthSchema:
     # Inicializa response
     def __init__(self, month: Month):
         self.month: str = month.month
+        self.id: int = month.id
         self.incomes: List[ItemSchema] = get_item_income(month.items)
         self.outcomes: List[ItemSchema] = get_item_outcome(month.items)
     
@@ -15,6 +16,7 @@ class MonthSchema:
     def to_json(self):
         return {
             "month": self.month,
+            "id": self.id,
             "incomes": list(map(get_item_json, self.incomes)),
             "outcomes": list(map(get_item_json, self.outcomes))
         }
