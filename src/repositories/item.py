@@ -1,4 +1,5 @@
 from models import Session, Month, Item
+from schemas.edit import ItemEditSchema
 from typing import List
 
 class ItemRepository():
@@ -22,6 +23,19 @@ class ItemRepository():
     def read(self, month: Month) -> List[Item]:
         items = self.__session.query(Item).filter(Item.month == month.id).all()
         return items
+
+    # Método update do repositório
+    def update(self, schema: ItemEditSchema):
+        if not self.is_valid(schema.type):
+            raise ValueError("Item is not valid.")
+
+        self.__session.query(Item).filter(Item.id == schema.id).update(
+            {
+                "name": schema.name,
+                "type": schema.type,
+                "value": schema.value
+            }
+        )
 
     # Método delete do repositório
     def delete(self, item_id: int) -> bool:
