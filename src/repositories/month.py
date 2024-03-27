@@ -16,7 +16,7 @@ class MonthRepository():
             raise ValueError("Month is not valid.")
 
         if existent_month:
-            raise ValueError("Month already added.")
+            return existent_month
 
         month = Month(month_string)
         year.add_month(month)

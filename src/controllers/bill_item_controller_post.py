@@ -1,7 +1,8 @@
 from flask import Blueprint, request
 from repositories.year import YearRepository
 from repositories.month import MonthRepository
-from models import Session, Year
+from repositories.item import ItemRepository
+from models import Session, Year, Month
 from schemas.default import DefaultRequestSchema
 
 post_bill_items = Blueprint("post_bill_items", __name__)
@@ -16,11 +17,14 @@ def create_bill_item():
         # Cria Schema
         schema = read_post_body(request.json)
         
-        # Cria Ano se não existir
+        # Cria ano se não existir
         year = save_year(session, schema.get_year())
 
         # Cria mês se não existir
-        save_month(session, schema.get_month(), year)
+        month = save_month(session, schema.get_month(), year)
+
+        # Cria item
+        save_item(session, schema.get_name(), schema.get_type(), schema.get_value(), month)
 
         # Executa commit no banco de dados
         session.commit()
@@ -33,15 +37,18 @@ def create_bill_item():
 
 def read_post_body(content) -> DefaultRequestSchema:
     # Busca body da rota de POST
-    year_string = str(content["year"])
-    month_string = str(content["month"]).lower()
-    
+    year = str(content["year"])
+    month = str(content["month"]).lower()
+    bill_type = str(content["type"]).lower()
+    name = str(content["name"])
+    value = float(content["value"])
+
     # Verifica valor do body
-    if not year_string or not month_string:
+    if not year or not month or not bill_type or not name or not value:
         raise ValueError("Invalid params.")
 
     # Retornos do schema
-    return DefaultRequestSchema(year_string, month_string)
+    return DefaultRequestSchema(year, month, bill_type, name, value)
 
 def save_year(session: Session, year: str) -> Year:
     try:
@@ -54,13 +61,24 @@ def save_year(session: Session, year: str) -> Year:
         # Tratativa de erro do repostirório
         raise ValueError("Error on saving year: " + str(e))
 
-def save_month(session: Session, month_string: str, year: Year):
+def save_month(session: Session, month_string: str, year: Year) -> Month:
     try:
         # Instancia repositório
         month_repository = MonthRepository(session)
 
         # Cria mês se não existir no repositório
-        month_repository.create(month_string, year)
+        return month_repository.create(month_string, year)
     except Exception as e:
         # Tratativa de erro do repostirório
         raise ValueError("Error on saving month: " + str(e))
+
+def save_item(session: Session, name: str, type_string: str, value: float, month: Month):
+    try:
+        # Instancia repositório
+        item_repository = ItemRepository(session)
+
+        # Cria item
+        item_repository.create(month, name, type_string, value)
+    except Exception as e:
+        # Tratativa de erro do repostirório
+        raise ValueError("Error on saving item: " + str(e))
