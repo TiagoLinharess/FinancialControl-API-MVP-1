@@ -6,11 +6,14 @@ from typing import List
 delete_bill_items = Blueprint("delete_bill_items", __name__)
 
 # Rota de DELETE do endpoint de Bill Items
-@delete_bill_items.delete('/bill_items/<int:id>')
-def delete_bill_item(id: int):
+@delete_bill_items.delete('/bill_items')
+def delete_bill_item():
     try:
         # Cria sessão
         session = Session()
+
+        # Procura campo id no body
+        id = int(request.json["id"])
 
         # Instancia reposirtório
         item_repository = ItemRepository(session)
