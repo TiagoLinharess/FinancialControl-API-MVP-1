@@ -23,6 +23,15 @@ class ItemRepository():
         items = self.__session.query(Item).filter(Item.month == month.id).all()
         return items
 
+    # Método delete do repositório
+    def delete(self, item_id: int) -> bool:
+        count = self.__session.query(Item).filter(Item.id == item_id).delete()
+
+        if count:
+            return True
+        else:
+            return False
+
     # Método is_valid do repositório
     def is_valid(self, type_string: str) -> bool:
         if type_string in self.types: 
