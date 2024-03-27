@@ -1,5 +1,5 @@
 import json
-from models import Year, Month
+from models import Year, Month, Item
 from typing import List
 
 class DefaultRequestSchema:
@@ -51,23 +51,65 @@ class MonthSchema:
     # Inicializa response
     def __init__(self, month: Month):
         self.month: str = month.month
+        self.incomes: List[ItemSchema] = get_item_income(month.items)
+        self.outcomes: List[ItemSchema] = get_item_outcome(month.items)
     
     # Transforma objeto em json
     def to_json(self):
         return {
             "month": self.month,
-            "incomes": [],
-            "outcomes": []
+            "incomes": list(map(get_item_json, self.incomes)),
+            "outcomes": list(map(get_item_json, self.outcomes))
         }
+
+class ItemSchema:
+
+    # Inicializa response
+    def __init__(self, item: Item):
+        self.name: str = item.name
+        self.type: str = item.type
+        self.value: str = item.value
     
+    # Transforma objeto em json
+    def to_json(self):
+        return {
+            "name": self.name,
+            "type": self.type,
+            "value": self.value
+        }
+
+# Transforma model Item para ItemSchema
+def get_item_income(items: List[Item]) -> List[ItemSchema]:
+    item_schema: List[ItemSchema] = []
+
+    for item in items:
+        if item.type == "income":
+            item_schema.append(ItemSchema(item))
+    
+    return item_schema
+
+# Transforma model Item para ItemSchema
+def get_item_outcome(items: List[Item]) -> List[ItemSchema]:
+    item_schema: List[ItemSchema] = []
+
+    for item in items:
+        if item.type == "outcome":
+            item_schema.append(ItemSchema(item))
+
+    return item_schema
+
+# Transforma model ItemSchema para Json
+def get_item_json(item: ItemSchema):
+
+    return item.to_json()
 
 # Transforma model Month para MonthSchema
 def get_month(month: Month) -> MonthSchema:
     return MonthSchema(month)
 
 # Transforma model MonthSchema para Json
-def get_month_json(month: Month):
-    return MonthSchema(month).to_json()
+def get_month_json(month: MonthSchema):
+    return month.to_json()
 
 # Transforma model DefaultResponseSchema para Json
 def get_schema_json(year: Year):

@@ -19,7 +19,7 @@ class Item(Base):
 
     def __init__(self, name: str, type_string: str, value: float, date_insert:Union[DateTime, None] = None):
         """
-        Cria um Month
+        Cria um Item
         Arguments:
             name: nome da conta.
             type: tipo da conta.

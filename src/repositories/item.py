@@ -1,4 +1,5 @@
 from models import Session, Month, Item
+from typing import List
 
 class ItemRepository():
     # Propriedade de tipo da conta
@@ -14,12 +15,13 @@ class ItemRepository():
             raise ValueError("Item is not valid.")
 
         item = Item(name, type_string, value)
+        
         month.add_item(item)
     
-    # # Método read do repositório
-    # def read(self, year: Year) -> [Month]:
-    #     months = self.__session.query(Month).filter(Month.year == year.id).all()
-    #     return months
+    # Método read do repositório
+    def read(self, month: Month) -> List[Item]:
+        items = self.__session.query(Item).filter(Item.month == month.id).all()
+        return items
 
     # Método is_valid do repositório
     def is_valid(self, type_string: str) -> bool:

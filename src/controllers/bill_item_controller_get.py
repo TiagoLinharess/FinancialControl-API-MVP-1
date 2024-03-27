@@ -1,7 +1,8 @@
 from flask import Blueprint, request
 from repositories.year import YearRepository
 from repositories.month import MonthRepository
-from models import Session, Year, Month
+from repositories.item import ItemRepository
+from models import Session, Year, Month, Item
 from schemas.default import DefaultResponseSchema, get_default_list
 from typing import List
 
@@ -25,6 +26,12 @@ def read_bill_item():
 
             # Atribui meses ao ano
             year.months = months
+
+            # Loop para buscar os items
+            for month in months:
+
+                # Atribui items ao mês
+                month.items = get_items(session, month)
 
         return get_default_list(years)
     except Exception as e:
@@ -53,3 +60,14 @@ def get_months(session: Session, year: Year) -> List[Month]:
     except Exception as e:
         # Tratativa de erro do repostirório
         raise ValueError("Error on fetching month: " + str(e))
+
+def get_items(session: Session, month: Month) -> List[Item]:
+    try:
+        # Instancia repositório
+        item_repository = ItemRepository(session)
+
+        # Busca meses se existirem no repositório
+        return item_repository.read(month)
+    except Exception as e:
+        # Tratativa de erro do repostirório
+        raise ValueError("Error on fetching items: " + str(e))

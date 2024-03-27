@@ -1,4 +1,5 @@
 from models import Session, Year, Month
+from typing import List
 
 class MonthRepository():
     # Propriedade de meses
@@ -23,7 +24,7 @@ class MonthRepository():
         return month
     
     # Método read do repositório
-    def read(self, year: Year) -> [Month]:
+    def read(self, year: Year) -> List[Month]:
         months = self.__session.query(Month).filter(Month.year == year.id).all()
         return months
     
