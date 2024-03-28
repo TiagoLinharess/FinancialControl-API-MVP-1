@@ -1,7 +1,7 @@
 from flask import Blueprint, request
-from repositories.item import ItemRepository
+from repositories import ItemRepository
 from models import Session
-from schemas.edit import ItemEditSchema
+from schemas import ItemEditSchema, get_default_error, get_default_success
 
 update_bill_items = Blueprint("update_bill_items", __name__)
 
@@ -25,10 +25,10 @@ def update_bill_item():
         session.commit()
 
         # Retorno de sucesso da rota
-        return { "sussess": True }, 200
+        return get_default_success()
     except Exception as e:
         # Retorno de erro da rota
-        return { "error": str(e) }, 400
+        return get_default_error(str(e))
 
 def read_put_body(content) -> ItemEditSchema:
     id = int(request.json["id"])

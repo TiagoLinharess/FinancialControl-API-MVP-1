@@ -1,8 +1,5 @@
 from flask import Blueprint
-from controllers.bill_item_controller_post import post_bill_items
-from controllers.bill_item_controller_get import get_bill_items
-from controllers.bill_item_controller_update import update_bill_items
-from controllers.bill_item_controller_delete import delete_bill_items
+from controllers import post_bill_items, get_bill_items, update_bill_items, delete_bill_items
 
 # main blueprint to be registered with application
 api = Blueprint('api', __name__)

@@ -1,5 +1,4 @@
-from flask import Flask, jsonify, request
-from models import Session, Year
+from flask import Flask
 from routes import api
 
 # Inicializa API

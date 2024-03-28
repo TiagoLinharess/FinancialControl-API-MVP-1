@@ -1,9 +1,7 @@
 from flask import Blueprint, request
-from repositories.year import YearRepository
-from repositories.month import MonthRepository
-from repositories.item import ItemRepository
+from repositories import YearRepository, MonthRepository, ItemRepository
 from models import Session, Year, Month
-from schemas.default import DefaultRequestSchema
+from schemas import DefaultRequestSchema, get_default_error, get_default_success
 
 post_bill_items = Blueprint("post_bill_items", __name__)
 
@@ -30,10 +28,10 @@ def create_bill_item():
         session.commit()
 
         # Retorno de sucesso da rota
-        return { "success": True }, 201
+        return get_default_success()
     except Exception as e:
         # Retorno de erro da rota
-        return { "error": str(e) }, 400
+        return get_default_error(str(e))
 
 def read_post_body(content) -> DefaultRequestSchema:
     # Busca body da rota de POST

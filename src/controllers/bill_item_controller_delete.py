@@ -1,7 +1,7 @@
 from flask import Blueprint, request
-from repositories.item import ItemRepository
-from models import Session, Item
-from typing import List
+from repositories import ItemRepository
+from models import Session
+from schemas import get_default_error, get_default_success
 
 delete_bill_items = Blueprint("delete_bill_items", __name__)
 
@@ -26,7 +26,7 @@ def delete_bill_item():
         session.commit()
 
         # Retorno de sucesso da rota
-        return { "sussess": True }, 200
+        return get_default_success()
     except Exception as e:
         # Retorno de erro da rota
-        return { "error": str(e) }, 400
+        return get_default_error(str(e))

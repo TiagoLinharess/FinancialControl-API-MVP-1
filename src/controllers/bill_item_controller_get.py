@@ -1,9 +1,7 @@
-from flask import Blueprint, request
-from repositories.year import YearRepository
-from repositories.month import MonthRepository
-from repositories.item import ItemRepository
+from flask import Blueprint
+from repositories import YearRepository, MonthRepository, ItemRepository
 from models import Session, Year, Month, Item
-from schemas.default import DefaultResponseSchema, get_default_list
+from schemas import get_default_list, get_default_error
 from typing import List
 
 get_bill_items = Blueprint("get_bill_items", __name__)
@@ -36,7 +34,7 @@ def read_bill_item():
         return get_default_list(years)
     except Exception as e:
         # Retorno de erro da rota
-        return { "error": str(e) }, 400
+        return get_default_error(str(e))
 
 
 def get_years(session: Session) -> List[Year]:

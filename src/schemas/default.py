@@ -56,11 +56,3 @@ def get_month(month: Month) -> MonthSchema:
 # Transforma model MonthSchema para Json
 def get_month_json(month: MonthSchema):
     return month.to_json()
-
-# Transforma model DefaultResponseSchema para Json
-def get_schema_json(year: Year):
-    return DefaultResponseSchema(year).to_json()
-
-# Transforma lista Years para Json
-def get_default_list(years: List[Year]):
-    return list(map(get_schema_json, years))
