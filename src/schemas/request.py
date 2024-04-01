@@ -32,27 +32,3 @@ class DefaultRequestSchema:
     # Busca valor de VALUE
     def get_value(self) -> float:
         return self.__value
-
-class DefaultResponseSchema:
-
-    # Inicializa response
-    def __init__(self, year: Year):
-        self.year: str = year.year
-        self.id: int = year.id
-        self.months: List[MonthSchema] = list(map(get_month, year.months))
-    
-    # Transforma objeto em json
-    def to_json(self):
-        return {
-            "year": self.year,
-            "id": self.id,
-            "months": list(map(get_month_json, self.months))
-        }
-
-# Transforma model Month para MonthSchema
-def get_month(month: Month) -> MonthSchema:
-    return MonthSchema(month)
-
-# Transforma model MonthSchema para Json
-def get_month_json(month: MonthSchema):
-    return month.to_json()

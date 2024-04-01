@@ -1,7 +1,7 @@
 from flask import Blueprint
 from repositories import YearRepository, MonthRepository, ItemRepository
 from models import Session, Year, Month, Item
-from schemas import get_default_list, get_default_error
+from schemas import YearListSchema, get_default_error
 from typing import List
 
 get_bill_items = Blueprint("get_bill_items", __name__)
@@ -31,7 +31,7 @@ def read_bill_item():
                 # Atribui items ao mês
                 month.items = get_items(session, month)
 
-        return get_default_list(years)
+        return YearListSchema(years).to_json()
     except Exception as e:
         # Retorno de erro da rota
         return get_default_error(str(e))
