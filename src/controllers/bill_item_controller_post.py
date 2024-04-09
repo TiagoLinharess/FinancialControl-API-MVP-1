@@ -1,9 +1,9 @@
 from repositories import YearRepository, MonthRepository, ItemRepository
 from models import Session, Year, Month
-from schemas import DefaultRequestSchema, get_default_error, get_default_success, ExamplePostSchema
+from schemas import DefaultRequestSchema, get_default_error, get_default_success, RequestPostSchema
 
 # Rota de POST do endpoint de Bill Items
-def post_bill_items(form: ExamplePostSchema):
+def post_bill_items(form: RequestPostSchema):
     try:
         # Cria sessão
         session = Session()
@@ -29,7 +29,7 @@ def post_bill_items(form: ExamplePostSchema):
         # Retorno de erro da rota
         return get_default_error(str(e))
 
-def read_post_body(form: ExamplePostSchema) -> DefaultRequestSchema:
+def read_post_body(form: RequestPostSchema) -> DefaultRequestSchema:
     # Busca body da rota de POST
     year = form.year
     month = form.month.lower()

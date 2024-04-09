@@ -1,9 +1,9 @@
 from repositories import ItemRepository
 from models import Session
-from schemas import ItemEditSchema, get_default_error, get_default_success, ExamplePutSchema
+from schemas import ItemEditSchema, get_default_error, get_default_success, RequestPutSchema
 
 # Rota de UPDATE do endpoint de Bill Items
-def update_bill_items(form: ExamplePutSchema):
+def update_bill_items(form: RequestPutSchema):
     try:
         # Cria sessão
         session = Session()
@@ -26,7 +26,7 @@ def update_bill_items(form: ExamplePutSchema):
         # Retorno de erro da rota
         return get_default_error(str(e))
 
-def read_put_body(form: ExamplePutSchema) -> ItemEditSchema:
+def read_put_body(form: RequestPutSchema) -> ItemEditSchema:
     id = int(form.id)
     name = form.name
     type = form.type

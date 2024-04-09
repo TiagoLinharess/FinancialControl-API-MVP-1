@@ -1,7 +1,24 @@
+from pydantic import BaseModel
 import json
 from schemas.month import MonthSchema
 from models import Year, Month, Item
 from typing import List
+
+class RequestPostSchema(BaseModel):
+    year: str
+    month: str
+    type: str
+    name: str
+    value: float
+
+class RequestDeleteSchema(BaseModel):
+    id: int
+
+class RequestPutSchema(BaseModel):
+    id: int
+    type: str
+    name: str
+    value: float
 
 class DefaultRequestSchema:
 

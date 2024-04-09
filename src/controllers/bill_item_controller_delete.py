@@ -1,9 +1,9 @@
 from repositories import ItemRepository
 from models import Session
-from schemas import get_default_error, get_default_success, ExampleDeleteSchema
+from schemas import get_default_error, get_default_success, RequestDeleteSchema
 
 # Rota de DELETE do endpoint de Bill Items
-def delete_bill_items(form: ExampleDeleteSchema):
+def delete_bill_items(form: RequestDeleteSchema):
     try:
         # Cria sessão
         session = Session()
