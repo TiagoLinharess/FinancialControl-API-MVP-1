@@ -1,19 +1,15 @@
-from flask import Blueprint, request
 from repositories import YearRepository, MonthRepository, ItemRepository
 from models import Session, Year, Month
-from schemas import DefaultRequestSchema, get_default_error, get_default_success
-
-post_bill_items = Blueprint("post_bill_items", __name__)
+from schemas import DefaultRequestSchema, get_default_error, get_default_success, ExamplePostSchema
 
 # Rota de POST do endpoint de Bill Items
-@post_bill_items.post('/bill_items')
-def create_bill_item():
+def post_bill_items(form: ExamplePostSchema):
     try:
         # Cria sessão
         session = Session()
 
         # Cria Schema
-        schema = read_post_body(request.json)
+        schema = read_post_body(form)
         
         # Cria ano se não existir
         year = save_year(session, schema.get_year())
@@ -33,13 +29,13 @@ def create_bill_item():
         # Retorno de erro da rota
         return get_default_error(str(e))
 
-def read_post_body(content) -> DefaultRequestSchema:
+def read_post_body(form: ExamplePostSchema) -> DefaultRequestSchema:
     # Busca body da rota de POST
-    year = str(content["year"])
-    month = str(content["month"]).lower()
-    bill_type = str(content["type"]).lower()
-    name = str(content["name"])
-    value = float(content["value"])
+    year = form.year
+    month = form.month.lower()
+    bill_type = form.type.lower()
+    name = form.name
+    value = float(form.value)
 
     # Verifica valor do body
     if not year or not month or not bill_type or not name or not value:

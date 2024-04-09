@@ -1,14 +1,10 @@
-from flask import Blueprint
 from repositories import YearRepository, MonthRepository, ItemRepository
 from models import Session, Year, Month, Item
 from schemas import YearListSchema, get_default_error
 from typing import List
 
-get_bill_items = Blueprint("get_bill_items", __name__)
-
 # Rota de GET do endpoint de Bill Items
-@get_bill_items.get('/bill_items')
-def read_bill_item():
+def get_bill_items():
     try:
         # Cria sessão
         session = Session()

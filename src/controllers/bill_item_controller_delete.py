@@ -1,19 +1,15 @@
-from flask import Blueprint, request
 from repositories import ItemRepository
 from models import Session
-from schemas import get_default_error, get_default_success
-
-delete_bill_items = Blueprint("delete_bill_items", __name__)
+from schemas import get_default_error, get_default_success, ExampleDeleteSchema
 
 # Rota de DELETE do endpoint de Bill Items
-@delete_bill_items.delete('/bill_items')
-def delete_bill_item():
+def delete_bill_items(form: ExampleDeleteSchema):
     try:
         # Cria sessão
         session = Session()
 
         # Procura campo id no body
-        id = int(request.json["id"])
+        id = int(form.id)
 
         # Instancia reposirtório
         item_repository = ItemRepository(session)
