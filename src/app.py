@@ -1,4 +1,5 @@
 from flask_openapi3 import OpenAPI, Info, Tag
+from flask_cors import CORS
 from pydantic import BaseModel
 from flask import redirect
 from controllers import get_bill_items, post_bill_items, delete_bill_items, update_bill_items
@@ -7,6 +8,7 @@ from schemas import ResponseYearsListSchema, ResponseErrorSchema, ResponseSucces
 # Inicializa API
 info = Info(title="Financial Control API MVP 1", version="0.1.0")
 app = OpenAPI(__name__, info=info)
+CORS(app)
 
 # Documentação
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
