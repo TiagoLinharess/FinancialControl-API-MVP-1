@@ -11,13 +11,13 @@ class ResponseSuccessSchema(BaseModel):
 class ResponseIncomeSchema(BaseModel):
     id: int = 1
     name: str = "Bill"
-    type: str = "income"
+    type: str = "entrada"
     value: float = 100
 
 class ResponseOutcomeSchema(BaseModel):
     id: int = 2
     name: str = "Bill"
-    type: str = "outcome"
+    type: str = "saída"
     value: float = 100
 
 class ResponseMonthSchema(BaseModel):

@@ -3,7 +3,7 @@ from typing import List
 
 class MonthRepository():
     # Propriedade de meses
-    months = ["januar", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
+    months = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
 
     # Inicializa repositório
     def __init__(self, session: Session):

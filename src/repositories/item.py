@@ -4,7 +4,7 @@ from typing import List
 
 class ItemRepository():
     # Propriedade de tipo da conta
-    types = ["income", "outcome"]
+    types = ["entrada", "saída"]
 
     # Inicializa repositório
     def __init__(self, session: Session):

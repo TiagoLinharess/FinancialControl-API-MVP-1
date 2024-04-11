@@ -23,11 +23,11 @@ class MonthSchema:
 
 # Transforma model Item para ItemSchema
 def get_item_income(items: List[Item]) -> List[ItemSchema]:
-    return get_item_schema(items, "income")
+    return get_item_schema(items, "entrada")
 
 # Transforma model Item para ItemSchema
 def get_item_outcome(items: List[Item]) -> List[ItemSchema]:
-    return get_item_schema(items, "outcome")
+    return get_item_schema(items, "saída")
 
 # Transforma model Item para ItemSchema
 def get_item_schema(items: List[Item], type: str):
