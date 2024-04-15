@@ -29,7 +29,7 @@ def update_bill_items(form: RequestPutSchema):
 def read_put_body(form: RequestPutSchema) -> ItemEditSchema:
     id = int(form.id)
     name = form.name
-    type = form.type
+    type = form.type.lower()
     value = float(form.value)
 
     return ItemEditSchema(id, name, type, value)
