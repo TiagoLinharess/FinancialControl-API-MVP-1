@@ -1,6 +1,6 @@
-# Financial Control MVP 1
+# Financial Control API MVP 1
 
-Este pequeno projeto é a primeira versão do MVP do Financial Control
+Este pequeno projeto é a primeira versão da api do MVP do Financial Control
 
 O objetivo do projeto é um crud completo com criação, listagem, edição e deleção de contas voltadas para a organização financeira, sendo agrupadas por meses e anos.
 
