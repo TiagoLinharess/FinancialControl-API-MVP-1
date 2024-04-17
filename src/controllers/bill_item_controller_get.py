@@ -26,11 +26,21 @@ def get_bill_items():
 
                 # Atribui items ao mês
                 month.items = get_items(session, month)
+        
+        # Transforma Model em JSON
+        year_list_schema_json = YearListSchema(years).to_json()
 
-        return YearListSchema(years).to_json()
+        # Ordena JSON
+        year_list_schema_json['years'] = sorted(year_list_schema_json['years'], key=extract_year, reverse=True)
+
+        # Retorna resultado
+        return year_list_schema_json
     except Exception as e:
         # Retorno de erro da rota
         return get_default_error(str(e))
+
+def extract_year(json):
+    return int(json['year'])
 
 
 def get_years(session: Session) -> List[Year]:
